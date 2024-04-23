@@ -1,12 +1,13 @@
 #include "Graph.h"
 
 
-Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0), numedge(0)	//ï¿½ï¿½ï¿½ï¿½ï¿½blocknameÒ»ï¿½ï¿½Òªï¿½ï¿½Ë³ï¿½ï¿½
+Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0), numedge(0)	//ÕâÀïµÄblocknameÒ»¶¨Òª°´Ë³Ðò
 {
 	std::vector<statement> & Vs= block.get_statements();
-	numnode = Vs.size();		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	numnode = Vs.size();		//ÔËËãÊýÁ¿
 
 	//initialize
+	name = block.get_label_name();
 	matrix = new int* [numnode];
 	for (int i = 0; i < numnode; i++)
 	{
@@ -20,11 +21,11 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 		source.push_back(0);
 	}
 
-	//È·ï¿½ï¿½outport
+	//È·¶¨outport
 	bool hasBR = false;
 	for (std::vector<statement>::iterator it = Vs.begin(); it != Vs.end(); ++it)
 	{
-		//ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½brï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½brÈ·ï¿½ï¿½ï¿½ï¿½×ªï¿½Ë¿ï¿½
+		//Èç¹ûÕÒµ½ÁËbr£¬¾Í¸ù¾ÝbrÈ·¶¨Ìø×ª¶Ë¿Ú
 		if (it->get_type() == OP_TYPE::OP_BR)
 		{
 			hasBR = true;
@@ -40,7 +41,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 			else if (it->get_num_oprands() == 3)	//br cond label1 label2
 			{
 				numberofoutport = 2;
-				//ï¿½ï¿½ï¿½Ï²ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤label1ï¿½È±ï¿½pushï¿½ï¿½outportï¿½ï¿½ï¿½ï¿½
+				//²»ºÏ²¢Ñ­»·£¬±£Ö¤label1ÏÈ±»pushµ½outportÀïÃæ
 				for (int i = 0; i < blockname.size(); i++)
 				{
 					if (blockname[i] == it->get_oprand(1))
@@ -52,7 +53,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 						outport.push_back(i);
 				}
 			}
-			else	//brÃ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			else	//brÃ»ÓÐÆäËüÇé¿öÁË
 			{
 				std::cout << "br oprand number error!" << std::endl;
 				exit(2);
@@ -60,7 +61,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 			break;
 		}
 	}
-	if (!hasBR)	//Ã»ï¿½ï¿½brï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½Ò»ï¿½ï¿½blockï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½outportï¿½ï¿½Îª-1
+	if (!hasBR)	//Ã»ÓÐbr£¬Ö±½ÓÌø×ªµ½½ôÁÚµÄÏÂÒ»¸öblock£»Èç¹ûÊÇ×îºóÒ»¸ö£¬outportÉèÎª-1
 	{
 		numberofoutport = 1;
 		for (int i = 0; i < blockname.size(); i++)
@@ -73,14 +74,14 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 		}
 	}
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
+	//½âÎöÔËËã×óÖµ±äÁ¿
 	for (int i = 0; i < numnode; i++)
 	{
 		values.push_back(Vs[i].get_var());
 		op.push_back(Vs[i].get_type());
 	}
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ
+	//½âÎö²Ù×÷ÊýÒÀÀµ¹ØÏµ
 	for (int i = 0; i < numnode; i++)
 	{
 		statement& s = Vs[i];
@@ -88,12 +89,12 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 		{
 			for (int k = 0; k < i; k++)
 			{
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½ï¿½Öµï¿½ï¿½Î»ï¿½Ã³ï¿½ï¿½Ö¹ï¿½
+				//Èç¹û²Ù×÷ÊýÔÚÖ®Ç°×óÖµµÄÎ»ÖÃ³öÏÖ¹ý
 				if (s.get_oprand(j) == Vs[k].get_var())
 					setEdge(k, i);
 			}
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½brï¿½ï¿½ï¿½ï¿½returnÖ¸ï¿½î£¬ï¿½ï¿½Òªï¿½ï¿½Ç°ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½
+		//Èç¹ûÊÇbr»òÕßreturnÖ¸Áî£¬ÐèÒªµÈÇ°ÃæµÄÈ«²¿Íê³É
 		if (s.get_type() == OP_BR || s.get_type() == OP_RET)
 		{
 			for (int k = 0; k < i; k++)
@@ -106,6 +107,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 
 void Graph::showInfo()
 {
+	std::cout << name << std::endl;
 	for (int i = 0; i < numnode; i++)
 	{
 		std::cout << "value: " << values[i] << ", type: " << op[i] << std::endl;
@@ -130,7 +132,7 @@ void Graph::showInfo()
 
 void Graph::setEdge(int from, int to)
 {
-	//ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Ã»ï¿½Ð±ï¿½
+	//Èç¹ûÔ­À´Ã»ÓÐ±ß
 	if (matrix[from][to] <= 0)
 	{
 		numedge++;
@@ -141,7 +143,7 @@ void Graph::setEdge(int from, int to)
 
 void Graph::delEdge(int from, int to)
 {
-	//ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½Ð±ï¿½
+	//Èç¹ûÔ­À´ÓÐ±ß
 	if (matrix[from][to] > 0)
 	{
 		numedge--;
