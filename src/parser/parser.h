@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include<queue>
 
 enum OP_TYPE
 {
