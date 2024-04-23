@@ -1,6 +1,6 @@
 #include "parser.h"
 #include <sstream>
-
+#include <string.h>
 basic_block::basic_block(std::string &label)
 {
     _label = label;
@@ -34,17 +34,17 @@ int Parser::Parse()
     if (!inf)
         return 1;
 
-    while (getline(inf, line))  //ÖðÐÐ¶ÁÈ¡
+    while (getline(inf, line))  //ï¿½ï¿½ï¿½Ð¶ï¿½È¡
     {
         _line = line;
         iss.clear();
         iss.str(line);
 
-        if (!(iss >> tok))  //Èç¹û´ÓissÊäÈëÁ÷ÖÐÌáÈ¡Ê§°Ü£¬ÔòÌø¹ý
+        if (!(iss >> tok))  //ï¿½ï¿½ï¿½ï¿½ï¿½issï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             continue;
         else
         {
-            if (tok == "define")    //LLVMµÄ¶¨Òåº¯ÊýÓï¾ä
+            if (tok == "define")    //LLVMï¿½Ä¶ï¿½ï¿½åº¯ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 function_parse = parse_function(line);
             }
@@ -72,19 +72,19 @@ int Parser::parse_function(std::string &line)
 {
     char *tok;
     std::string key;
-    char sep[] = " (,)";    //ÒÔ¿Õ¸ñ£¬×óÓÒÀ¨ºÅºÍ¶ººÅÎª·Ö¸ô·û£¬ÕâÐ©·ûºÅ²»»á±»¶ÁÈëtok
+    char sep[] = " (,)";    //ï¿½Ô¿Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÅºÍ¶ï¿½ï¿½ï¿½Îªï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð©ï¿½ï¿½ï¿½Å²ï¿½ï¿½á±»ï¿½ï¿½ï¿½ï¿½tok
     int cnt = 0;
-    var p;          //¶ÁÈë±äÁ¿Ãû²¢¼ì²éÊÇ·ñÎªÊý×é
+    var p;          //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     int pos;
     int parser_error = 0;
 
-    tok = strtok(&line[0], sep);    //strtokº¯Êý·µ»ØÖ¸ÏòÏÂÒ»¸ö×Ö·û´®µÄÖ¸Õë
+    tok = strtok(&line[0], sep);    //strtokï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
     while ((tok = strtok(NULL, sep)) != NULL)
     {
         cnt++;
         key = std::string(tok);
-        if (key == "int" && cnt < 2)    //µÚÒ»¸öÊÇ·µ»ØÖµÀàÐÍ
+        if (key == "int" && cnt < 2)    //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
         {
             _ret_type = RET_INT;
         }
@@ -92,24 +92,24 @@ int Parser::parse_function(std::string &line)
         {
             _ret_type = RET_VOID;
         }
-        else if (cnt == 2)  //µÚ¶þ¸öÊÇº¯ÊýÃû
+        else if (cnt == 2)  //ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½Çºï¿½ï¿½ï¿½ï¿½ï¿½
         {
             _function_name = key;
         }
-        else if (cnt > 2)   //ºóÃæ¶¼ÊÇ
+        else if (cnt > 2)   //ï¿½ï¿½ï¿½æ¶¼ï¿½ï¿½
         {
             if (cnt % 2 == 0)   //varname || varname[]
             {
                 key = std::string(tok);
                 pos = key.find_first_of('[');
-                if (pos == std::string::npos)   //Î´ÕÒµ½[
+                if (pos == std::string::npos)   //Î´ï¿½Òµï¿½[
                 {
                     p._name = key;
                     p._array_flag = false;
                 }
                 else
                 {
-                    p._name = key.substr(0, pos);   //ÌáÈ¡key[0:pos-1]
+                    p._name = key.substr(0, pos);   //ï¿½ï¿½È¡key[0:pos-1]
                     p._array_flag = true;
                 }
                 _function_params.push_back(p);
@@ -132,39 +132,39 @@ int Parser::parse_statement(std::string &line, basic_block &bb)
 {
     char *tok;
     std::string key;
-    char sep[] = " (,);";   //·Ö¸ô·û°üÀ¨¿Õ¸ñ£¬×óÓÒÀ¨ºÅ£¬¶ººÅ£¬·ÖºÅ
+    char sep[] = " (,);";   //ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½Öºï¿½
     int cnt = 0;
     var p;
     int error = 0;
     statement s;
     int label = 0;
 
-    tok = strtok(&line[0], sep);    //lineµÚÒ»¸ö×Ö·û´®
+    tok = strtok(&line[0], sep);    //lineï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
     // 1. label
     key = std::string(tok);
-    if (key.find(':') != std::string::npos) //±êÇ©ÐÐ
+    if (key.find(':') != std::string::npos) //ï¿½ï¿½Ç©ï¿½ï¿½
     {
-        push_back_basic_block(bb);  //°ÑÉÏÒ»¸ö´¦ÀíºÃµÄbb¼ÓÈë
-        bb.clear_statements();      //Çå¿Õ
+        push_back_basic_block(bb);  //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½bbï¿½ï¿½ï¿½ï¿½
+        bb.clear_statements();      //ï¿½ï¿½ï¿½
         std::string name = key.substr(0, key.length() - 1);
-        bb.set_name(name);  //»ñÈ¡ÏÂÒ»¸öblockµÄÃû³Æ
+        bb.set_name(name);  //ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½blockï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         label = 1;
     }
     else if (key == "store") // store
     {
         s.set_type(OP_STORE);
-        s.set_num_oprands(3);   //storeÓÐÈý¸ö²Ù×÷Êý
+        s.set_num_oprands(3);   //storeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < 3; ++i)
         {
             tok = strtok(NULL, sep);
-            s.add_oprand(tok);  //²Ù×÷Êý
+            s.add_oprand(tok);  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
     else if (key == "br") // br
     {
         int num_ops = 0;
         s.set_type(OP_BR);
-        while ((tok = strtok(NULL, sep)) != NULL)   //brÓÐÁ½ÖÖÐ´·¨£¬²Ù×÷Êý²»Ò»¶¨
+        while ((tok = strtok(NULL, sep)) != NULL)   //brï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
         {
             num_ops++;
             s.add_oprand(tok);
@@ -182,21 +182,21 @@ int Parser::parse_statement(std::string &line, basic_block &bb)
         }
         s.set_num_oprands(num_ops);
     }
-    else    //ÏÂÃæÕâÐ©Ö¸ÁîµÄÃû³Æ¶¼²»ÊÇ´ÓÐÐÊ×¿ªÊ¼µÄ
+    else    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð©Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½ï¿½×¿ï¿½Ê¼ï¿½ï¿½
     {
         char sep2[] = " (,);";
         int num_ops = 0;
         std::vector<std::string> keys;
-        keys.push_back(key);    //keyÊÇµÈºÅ×ó²à±äÁ¿
+        keys.push_back(key);    //keyï¿½ÇµÈºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         while ((tok = strtok(NULL, sep)) != NULL)
         {
-            keys.push_back(tok);//´æÈëµÈºÅ£¬ÒÔ¼°µÈºÅÓÒ²àÖ¸ÁîºÍ²Ù×÷Êý
+            keys.push_back(tok);//ï¿½ï¿½ï¿½ï¿½ÈºÅ£ï¿½ï¿½Ô¼ï¿½ï¿½Èºï¿½ï¿½Ò²ï¿½Ö¸ï¿½ï¿½Í²ï¿½ï¿½ï¿½ï¿½ï¿½
         }
         if (keys[2] == "phi")
         {
             s.set_var(key);
             s.set_type(OP_PHI);
-            s.set_num_oprands(keys.size() - 3); //³ýÁËÇ°ÃæÈý¸öºóÃæ¶¼ÊÇ
+            s.set_num_oprands(keys.size() - 3); //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¶¼ï¿½ï¿½
             for (int i = 3; i < keys.size(); ++i)
                 s.add_oprand(keys[i]);
         }
