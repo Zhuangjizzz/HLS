@@ -1,16 +1,16 @@
 #include "Graph.h"
 
 
-Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0), numedge(0)	//这里的blockname一定要按顺序
+Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0), numedge(0)	//?????blockname?????????
 {
 	std::vector<statement> & Vs= block.get_statements();
-	numnode = Vs.size();		//运算数量
+	numnode = Vs.size();		//????????
 
 	//initialize
 	name = block.get_label_name();
 	matrix = new int* [numnode];
 	for (int i = 0; i < numnode; i++)
-	{
+	{ 
 		matrix[i] = new int[numnode];
 		for (int j = 0; j < numnode; j++)
 			matrix[i][j] = 0;
@@ -21,11 +21,11 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 		source.push_back(0);
 	}
 
-	//确定outport
+	//???outport
 	bool hasBR = false;
 	for (std::vector<statement>::iterator it = Vs.begin(); it != Vs.end(); ++it)
 	{
-		//如果找到了br，就根据br确定跳转端口
+		//????????br???????br?????????
 		if (it->get_type() == OP_TYPE::OP_BR)
 		{
 			hasBR = true;
@@ -41,7 +41,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 			else if (it->get_num_oprands() == 3)	//br cond label1 label2
 			{
 				numberofoutport = 2;
-				//不合并循环，保证label1先被push到outport里面
+				//?????????????label1???push??outport????
 				for (int i = 0; i < blockname.size(); i++)
 				{
 					if (blockname[i] == it->get_oprand(1))
@@ -53,7 +53,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 						outport.push_back(i);
 				}
 			}
-			else	//br没有其它情况了
+			else	//br????????????
 			{
 				std::cout << "br oprand number error!" << std::endl;
 				exit(2);
@@ -61,7 +61,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 			break;
 		}
 	}
-	if (!hasBR)	//没有br，直接跳转到紧邻的下一个block；如果是最后一个，outport设为-1
+	if (!hasBR)	//???br????????????????????block???????????????outport???-1
 	{
 		numberofoutport = 1;
 		for (int i = 0; i < blockname.size(); i++)
@@ -74,14 +74,14 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 		}
 	}
 	
-	//解析运算左值变量
+	//???????????????
 	for (int i = 0; i < numnode; i++)
 	{
 		values.push_back(Vs[i].get_var());
 		op.push_back(Vs[i].get_type());
 	}
 	
-	//解析操作数依赖关系
+	//?????????????????
 	for (int i = 0; i < numnode; i++)
 	{
 		statement& s = Vs[i];
@@ -89,12 +89,12 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 		{
 			for (int k = 0; k < i; k++)
 			{
-				//如果操作数在之前左值的位置出现过
+				//??????????????????λ?ó????
 				if (s.get_oprand(j) == Vs[k].get_var())
 					setEdge(k, i);
 			}
 		}
-		//如果是br或者return指令，需要等前面的全部完成
+		//?????br????return??????????????????
 		if (s.get_type() == OP_BR || s.get_type() == OP_RET)
 		{
 			for (int k = 0; k < i; k++)
@@ -132,7 +132,7 @@ void Graph::showInfo()
 
 void Graph::setEdge(int from, int to)
 {
-	//如果原来没有边
+	//????????б?
 	if (matrix[from][to] <= 0)
 	{
 		numedge++;
@@ -143,7 +143,7 @@ void Graph::setEdge(int from, int to)
 
 void Graph::delEdge(int from, int to)
 {
-	//如果原来有边
+	//???????б?
 	if (matrix[from][to] > 0)
 	{
 		numedge--;

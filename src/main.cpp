@@ -1,6 +1,6 @@
+// #include"Algorithm.h"
 #include "Graph.h"
 #include "parser.h"
-
 
 int main(int argc, char* argv[])
 {
@@ -38,3 +38,13 @@ int main(int argc, char* argv[])
         dataControlStream[i].showInfo();
     }
 }
+    //scheduling
+//     Algorithm MtchaCoffee;
+//     std::vector<int> resConstraint = { 2, 2, 2 };
+//     for (int i = 0; i < dataControlStream.size(); i++)
+//     {
+//         MtchaCoffee.Min_Latency_with_limited_res(resConstraint, dataControlStream[i]);
+//         //MtchaCoffee.ASAP(dataControlStream[i]);
+//         MtchaCoffee.showTime(dataControlStream[i]);
+//     }
+// }
