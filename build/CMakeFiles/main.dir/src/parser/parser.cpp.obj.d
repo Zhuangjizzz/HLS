@@ -127,6 +127,13 @@ CMakeFiles/main.dir/src/parser/parser.cpp.obj: \
  E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_bvector.h \
  E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/vector.tcc \
  E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/iostream \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/queue \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/deque \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_deque.h \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/deque.tcc \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_heap.h \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/stl_queue.h \
+ E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/uses_allocator.h \
  E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/sstream \
  E:/IDE/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/bits/sstream.tcc \
  E:/IDE/mingw64/mingw64/x86_64-w64-mingw32/include/string.h \
