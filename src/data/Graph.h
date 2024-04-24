@@ -36,6 +36,7 @@ public:
 	~Graph();
 
 public:
+	std::string name;							//block名称
 	int** matrix;								//指向相邻矩阵的指针，矩阵维度位numnode*numnode
 	std::vector<int> mark;		 				//标记顶点是否访问过
 	std::vector<int> indegree;					//顶点入度
