@@ -1,6 +1,6 @@
 #include "parser.h"
 #include <sstream>
-
+#include "string.h"
 basic_block::basic_block(std::string &label)
 {
     _label = label;

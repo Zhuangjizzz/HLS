@@ -10,7 +10,7 @@ Graph::Graph(basic_block& block, std::vector<std::string> blockname) : jumpto(0)
 	name = block.get_label_name();
 	matrix = new int* [numnode];
 	for (int i = 0; i < numnode; i++)
-	{
+	{ 
 		matrix[i] = new int[numnode];
 		for (int j = 0; j < numnode; j++)
 			matrix[i][j] = 0;
