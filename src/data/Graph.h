@@ -24,29 +24,32 @@ public:
 class Graph
 {
 public:
+	Graph();
 	Graph(basic_block&, std::vector<std::string>);
-	void showInfo();
-	void setEdge(int, int);
-	void delEdge(int, int);
-	edge getFirstEdge(int);
-	edge getNextEdge(const edge&);
-	bool IsEdge(const edge&);
-	Graph(const Graph&);
-	Graph& operator=(const Graph&);
 	~Graph();
+	void show_info();
+	void set_edge(int, int);
+	void del_edge(int, int);
+	edge get_first_edge(int);
+	edge get_next_edge(const edge&);
+	bool is_edge(const edge&);
+	// Graph(const Graph&);
+	// Graph& operator=(const Graph&);
+	// ~Graph();
 
 public:
-	std::string name;							//blockÃû³Æ
-	int** matrix;								//Ö¸ÏòÏàÁÚ¾ØÕóµÄÖ¸Õë£¬¾ØÕóÎ¬¶ÈÎ»numnode*numnode
-	std::vector<int> mark;		 				//±ê¼Ç¶¥µãÊÇ·ñ·ÃÎÊ¹ı
-	std::vector<int> indegree;					//¶¥µãÈë¶È
-	std::vector<int> op;						//²Ù×÷ÀàĞÍ
-	std::vector<int> sch;						//¶¥µãµ÷¶ÈÖÜÆÚ
-	std::vector<int> reg;						//¶¥µãµÄ¼Ä´æÆ÷
-	std::vector<int> source;					//¶¥µãµÄÓ²¼ş¼ÆËã×ÊÔ´
-	std::vector<int> outport;					//Ìø×ªÄ¿±êblock±àºÅ
-	std::vector<std::string> values;			//±äÁ¿Ãû³Æ
-	int numnode, numedge, numberofoutport;
+	std::string name;							//blockåç§°
+	std::vector<std::vector<int>> matrix;	    //æŒ‡å‘ç›¸é‚»çŸ©é˜µçš„æŒ‡é’ˆï¼ŒçŸ©é˜µç»´åº¦ä½numnode*numnode
+	std::vector<int> mark;		 				//æ ‡è®°ç®—å­æ˜¯å¦è®¿é—®è¿‡
+	std::vector<int> indegree;					//ç®—å­å…¥åº¦
+	std::vector<int> op;						//ç®—å­æ“ä½œç±»å‹
+	std::vector<int> sch;						//ç®—å­è°ƒåº¦å‘¨æœŸ
+	// std::vector<int> reg;						//ç®—å­å¯¹åº”çš„å¯„å­˜å™¨
+	std::vector<int> source;					//ç®—å­ä½¿ç”¨çš„ç¡¬ä»¶èµ„æºç¼–å·
+
+	std::vector<int> outport;					//è·³è½¬ç›®æ ‡blockç¼–å·
+	std::vector<std::string> values;			//å˜é‡åç§°
+	int num_node, num_edge, num_outport;
 	int jumpto;
 };
 

@@ -18,7 +18,7 @@ Parser::Parser(const std::string &filename)
 
 int Parser::Parse()
 {
-    std::ifstream inf(_filename);
+    std::ifstream inf(_filename);//æ‰“å¼€æ–‡ä»¶
     if (!inf)
         return 1;
 
@@ -34,17 +34,17 @@ int Parser::Parse()
     if (!inf)
         return 1;
 
-    while (getline(inf, line))  //ÖğĞĞ¶ÁÈ¡
+    while (getline(inf, line))  //é€è¡Œè¯»å–
     {
         _line = line;
         iss.clear();
         iss.str(line);
 
-        if (!(iss >> tok))  //Èç¹û´ÓissÊäÈëÁ÷ÖĞÌáÈ¡Ê§°Ü£¬ÔòÌø¹ı
+        if (!(iss >> tok))  //å¦‚æœä»issè¾“å…¥æµä¸­æå–å¤±è´¥ï¼Œåˆ™è·³è¿‡
             continue;
         else
         {
-            if (tok == "define")    //LLVMµÄ¶¨Òåº¯ÊıÓï¾ä
+            if (tok == "define")    //LLVMçš„å®šä¹‰å‡½æ•°è¯­å¥
             {
                 function_parse = parse_function(line);
             }
@@ -72,19 +72,19 @@ int Parser::parse_function(std::string &line)
 {
     char *tok;
     std::string key;
-    char sep[] = " (,)";    //ÒÔ¿Õ¸ñ£¬×óÓÒÀ¨ºÅºÍ¶ººÅÎª·Ö¸ô·û£¬ÕâĞ©·ûºÅ²»»á±»¶ÁÈëtok
+    char sep[] = " (,)";    //ä»¥ç©ºæ ¼ï¼Œå·¦å³æ‹¬å·å’Œé€—å·ä¸ºåˆ†éš”ç¬¦ï¼Œè¿™äº›ç¬¦å·ä¸ä¼šè¢«è¯»å…¥tok
     int cnt = 0;
-    var p;          //¶ÁÈë±äÁ¿Ãû²¢¼ì²éÊÇ·ñÎªÊı×é
+    var p;          //è¯»å…¥å˜é‡åå¹¶æ£€æŸ¥æ˜¯å¦ä¸ºæ•°ç»„
     int pos;
     int parser_error = 0;
 
-    tok = strtok(&line[0], sep);    //strtokº¯Êı·µ»ØÖ¸ÏòÏÂÒ»¸ö×Ö·û´®µÄÖ¸Õë
+    tok = strtok(&line[0], sep);    //strtokå‡½æ•°è¿”å›æŒ‡å‘ä¸‹ä¸€ä¸ªå­—ç¬¦ä¸²çš„æŒ‡é’ˆ
 
     while ((tok = strtok(NULL, sep)) != NULL)
     {
         cnt++;
         key = std::string(tok);
-        if (key == "int" && cnt < 2)    //µÚÒ»¸öÊÇ·µ»ØÖµÀàĞÍ
+        if (key == "int" && cnt < 2)    //ç¬¬ä¸€ä¸ªæ˜¯è¿”å›å€¼ç±»å‹
         {
             _ret_type = RET_INT;
         }
@@ -92,24 +92,24 @@ int Parser::parse_function(std::string &line)
         {
             _ret_type = RET_VOID;
         }
-        else if (cnt == 2)  //µÚ¶ş¸öÊÇº¯ÊıÃû
+        else if (cnt == 2)  //ç¬¬äºŒä¸ªæ˜¯å‡½æ•°å
         {
             _function_name = key;
         }
-        else if (cnt > 2)   //ºóÃæ¶¼ÊÇ
+        else if (cnt > 2)   //åé¢éƒ½æ˜¯
         {
             if (cnt % 2 == 0)   //varname || varname[]
             {
                 key = std::string(tok);
                 pos = key.find_first_of('[');
-                if (pos == std::string::npos)   //Î´ÕÒµ½[
+                if (pos == std::string::npos)   //æœªæ‰¾åˆ°[
                 {
                     p._name = key;
                     p._array_flag = false;
                 }
                 else
                 {
-                    p._name = key.substr(0, pos);   //ÌáÈ¡key[0:pos-1]
+                    p._name = key.substr(0, pos);   //æå–key[0:pos-1]
                     p._array_flag = true;
                 }
                 _function_params.push_back(p);
@@ -132,39 +132,39 @@ int Parser::parse_statement(std::string &line, basic_block &bb)
 {
     char *tok;
     std::string key;
-    char sep[] = " (,);";   //·Ö¸ô·û°üÀ¨¿Õ¸ñ£¬×óÓÒÀ¨ºÅ£¬¶ººÅ£¬·ÖºÅ
+    char sep[] = " (,);";   //åˆ†éš”ç¬¦åŒ…æ‹¬ç©ºæ ¼ï¼Œå·¦å³æ‹¬å·ï¼Œé€—å·ï¼Œåˆ†å·
     int cnt = 0;
     var p;
     int error = 0;
     statement s;
     int label = 0;
 
-    tok = strtok(&line[0], sep);    //lineµÚÒ»¸ö×Ö·û´®
+    tok = strtok(&line[0], sep);    //lineç¬¬ä¸€ä¸ªå­—ç¬¦ä¸²
     // 1. label
     key = std::string(tok);
-    if (key.find(':') != std::string::npos) //±êÇ©ĞĞ
+    if (key.find(':') != std::string::npos) //æ ‡ç­¾è¡Œ
     {
-        push_back_basic_block(bb);  //°ÑÉÏÒ»¸ö´¦ÀíºÃµÄbb¼ÓÈë
-        bb.clear_statements();      //Çå¿Õ
+        push_back_basic_block(bb);  //æŠŠä¸Šä¸€ä¸ªå¤„ç†å¥½çš„bbåŠ å…¥
+        bb.clear_statements();      //æ¸…ç©º
         std::string name = key.substr(0, key.length() - 1);
-        bb.set_name(name);  //»ñÈ¡ÏÂÒ»¸öblockµÄÃû³Æ
+        bb.set_name(name);  //è·å–ä¸‹ä¸€ä¸ªblockçš„åç§°
         label = 1;
     }
     else if (key == "store") // store
     {
         s.set_type(OP_STORE);
-        s.set_num_oprands(3);   //storeÓĞÈı¸ö²Ù×÷Êı
+        s.set_num_oprands(3);   //storeæœ‰ä¸‰ä¸ªæ“ä½œæ•°
         for (int i = 0; i < 3; ++i)
         {
             tok = strtok(NULL, sep);
-            s.add_oprand(tok);  //²Ù×÷Êı
+            s.add_oprand(tok);  //æ“ä½œæ•°
         }
     }
     else if (key == "br") // br
     {
         int num_ops = 0;
         s.set_type(OP_BR);
-        while ((tok = strtok(NULL, sep)) != NULL)   //brÓĞÁ½ÖÖĞ´·¨£¬²Ù×÷Êı²»Ò»¶¨
+        while ((tok = strtok(NULL, sep)) != NULL)   //bræœ‰ä¸¤ç§å†™æ³•ï¼Œæ“ä½œæ•°ä¸ä¸€å®š
         {
             num_ops++;
             s.add_oprand(tok);
@@ -182,21 +182,21 @@ int Parser::parse_statement(std::string &line, basic_block &bb)
         }
         s.set_num_oprands(num_ops);
     }
-    else    //ÏÂÃæÕâĞ©Ö¸ÁîµÄÃû³Æ¶¼²»ÊÇ´ÓĞĞÊ×¿ªÊ¼µÄ
+    else    //ä¸‹é¢è¿™äº›æŒ‡ä»¤çš„åç§°éƒ½ä¸æ˜¯ä»è¡Œé¦–å¼€å§‹çš„
     {
         char sep2[] = " (,);";
         int num_ops = 0;
         std::vector<std::string> keys;
-        keys.push_back(key);    //keyÊÇµÈºÅ×ó²à±äÁ¿
+        keys.push_back(key);    //keyæ˜¯ç­‰å·å·¦ä¾§å˜é‡
         while ((tok = strtok(NULL, sep)) != NULL)
         {
-            keys.push_back(tok);//´æÈëµÈºÅ£¬ÒÔ¼°µÈºÅÓÒ²àÖ¸ÁîºÍ²Ù×÷Êı
+            keys.push_back(tok);//å­˜å…¥ç­‰å·ï¼Œä»¥åŠç­‰å·å³ä¾§æŒ‡ä»¤å’Œæ“ä½œæ•°
         }
         if (keys[2] == "phi")
         {
             s.set_var(key);
             s.set_type(OP_PHI);
-            s.set_num_oprands(keys.size() - 3); //³ıÁËÇ°ÃæÈı¸öºóÃæ¶¼ÊÇ
+            s.set_num_oprands(keys.size() - 3); //é™¤äº†å‰é¢ä¸‰ä¸ªåé¢éƒ½æ˜¯
             for (int i = 3; i < keys.size(); ++i)
                 s.add_oprand(keys[i]);
         }

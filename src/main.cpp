@@ -1,6 +1,7 @@
 // #include"Algorithm.h"
 #include "Graph.h"
 #include "parser.h"
+#include "hls.h"
 
 int main(int argc, char* argv[])
 {
@@ -9,42 +10,28 @@ int main(int argc, char* argv[])
         std::cout << "Usage:" << argv[0] << "filename\n";
         return -1;
     }
-    Parser p(argv[1]);
-
+    //parse
+    Parser p = Parser(argv[1]);
     if (p.Parse() != 0)
     {
         std::cout << "parsing error" << p.get_current_line() << std::endl;
         return -1;
     }
 
-    std::vector<std::string> blockname;
-    std::vector<basic_block>& blocks = p.get_basic_blocks();
-    std::vector<Graph> dataControlStream;
-    //get blockname
-    for (int i = 0; i < blocks.size(); i++)
-    {
-        blockname.push_back(blocks[i].get_label_name());
-    }
-    //generate data-control stream
-    for (int i = 0; i < blocks.size(); i++)
-    {
-        Graph g(blocks[i], blockname);
-        dataControlStream.push_back(g);
-    }
+    HLS hls = HLS(p);
+    hls.run();
+    //scheduling
+    
 
-    //check
-    for (int i = 0; i < dataControlStream.size(); i++)
-    {
-        dataControlStream[i].showInfo();
-    }
-}
     //scheduling
 //     Algorithm MtchaCoffee;
 //     std::vector<int> resConstraint = { 2, 2, 2 };
-//     for (int i = 0; i < dataControlStream.size(); i++)
+//     for (int i = 0; i < data_control_stream.size(); i++)
 //     {
-//         MtchaCoffee.Min_Latency_with_limited_res(resConstraint, dataControlStream[i]);
-//         //MtchaCoffee.ASAP(dataControlStream[i]);
-//         MtchaCoffee.showTime(dataControlStream[i]);
+//         MtchaCoffee.Min_Latency_with_limited_res(resConstraint, data_control_stream[i]);
+//         //MtchaCoffee.ASAP(data_control_stream[i]);
+//         MtchaCoffee.showTime(data_control_stream[i]);
 //     }
 // }
+
+}

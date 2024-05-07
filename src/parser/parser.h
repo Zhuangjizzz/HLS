@@ -10,19 +10,19 @@
 enum OP_TYPE
 {
     OP_ASSIGN,  //0
-    OP_ADD,
-    OP_SUB,
-    OP_MUL,
-    OP_DIV,
-    OP_LOAD,
-    OP_STORE,
-    OP_BR,
-    OP_LT,
-    OP_GT,
-    OP_LE,
-    OP_GE,
-    OP_EQ,
-    OP_PHI,
+    OP_ADD,     //1
+    OP_SUB,     //2
+    OP_MUL,     //3
+    OP_DIV,     //4
+    OP_LOAD,    //5
+    OP_STORE,   //6
+    OP_BR,      //7
+    OP_LT,      //8
+    OP_GT,      //9
+    OP_LE,      //10
+    OP_GE,      //11
+    OP_EQ,      //12
+    OP_PHI,     //13
     OP_RET      //14
 };
 
@@ -32,7 +32,7 @@ enum RET_TYPE
     RET_INT
 };
 
-class statement     //Ò»ĞĞ
+class statement     //ä¸€è¡Œ
 {
     public:
        statement() {};
@@ -49,10 +49,10 @@ class statement     //Ò»ĞĞ
     
     private:
         std::string _line;
-        int _type;              //ÔËËãÀàĞÍ
-        int _num_oprands;       //²Ù×÷Êı¸öÊı
-        std::string _var;                   //×óÖµ
-        std::vector<std::string> _oprands;  //²Ù×÷Êı
+        int _type;              //è¿ç®—ç±»å‹
+        int _num_oprands;       //æ“ä½œæ•°ä¸ªæ•°
+        std::string _var;                   //å·¦å€¼
+        std::vector<std::string> _oprands;  //æ“ä½œæ•°
 };
 
 struct var
@@ -98,9 +98,9 @@ class Parser
     private:
         std::string _filename;
         std::vector<basic_block> _blocks;
-        std::string _function_name; //º¯ÊıÃû³Æ
-        std::vector<var> _function_params;  //º¯ÊıÀ¨ºÅÄÚµÄ±äÁ¿
-        int _ret_type;      //º¯Êı·µ»ØÖµÀàĞÍ
+        std::string _function_name; //å‡½æ•°åç§°
+        std::vector<var> _function_params;  //å‡½æ•°æ‹¬å·å†…çš„å˜é‡
+        int _ret_type;      //å‡½æ•°è¿”å›å€¼ç±»å‹
         std::string _line;
 };
 
