@@ -2,9 +2,8 @@
 #ifndef HLS_H
 #define HLS_H
 
-#include "parser/Parser.h"
-#include "data/GraphGroup.h"
-
+#include "parser.h"
+#include "graphgroup.h"
 class HLS {
 public:
     HLS(Parser& parser);
@@ -14,7 +13,7 @@ public:
 
 private:
     Parser& parser;
-    GraphGroup graphGroup;
+    GraphGroup graph_group;
 };
 
 #endif

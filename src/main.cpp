@@ -2,9 +2,14 @@
 #include "Graph.h"
 #include "parser.h"
 #include "hls.h"
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char* argv[])
 {
+    el::Configurations conf("logger/log.conf");
+	el::Loggers::reconfigureAllLoggers(conf);
     if (argc != 2)
     {
         std::cout << "Usage:" << argv[0] << "filename\n";
@@ -20,6 +25,13 @@ int main(int argc, char* argv[])
 
     HLS hls = HLS(p);
     hls.run();
+
+
+    return 0;
+
+
+
+
     //scheduling
     
 

@@ -43,6 +43,7 @@ class statement     //一行
        int get_num_oprands() {return _num_oprands;}
        void set_num_oprands(int t) {_num_oprands = t;}
        std::string & get_oprand(int num) {return _oprands[num];}
+       std::vector<std::string> & get_oprands() {return _oprands;}
        void add_oprand(const std::string & oprand) {_oprands.push_back(oprand);}
        void set_var(const std::string & var) {_var = var;}
        const std::string get_var() {return _var;}
