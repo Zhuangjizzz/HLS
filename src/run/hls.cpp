@@ -71,7 +71,7 @@ void HLS::run() {
     // }
     // LOG(INFO) << "Binding finished: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count() << "ms";
 
-    GenRTL genRTL(graph_group, "../result/output.v");
+    GenRTL genRTL(graph_group, "../result/dotprod.v");
     LOG(INFO) << "GenRTL finished: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count() << "ms";
 
 

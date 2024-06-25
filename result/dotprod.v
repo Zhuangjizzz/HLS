@@ -26,7 +26,6 @@ reg	[32-1:0]reg3;
 reg	[32-1:0]reg4;
 reg	[32-1:0]reg5;
 reg	[32-1:0]reg6;
-reg	[32-1:0]reg7;
 // state registers
 reg	[3-1:0]state;
 reg	[3-1:0]prev_state;
@@ -40,6 +39,23 @@ always @(posedge clk or negedge rst) begin
 		prev_state <= 0;
 		branch_state <= 0;
 		sub_state <= 0;
+		reg0 <= 0;
+		reg1 <= 0;
+		reg2 <= 0;
+		reg3 <= 0;
+		reg4 <= 0;
+		reg5 <= 0;
+		reg6 <= 0;
+		a_addr <= 0;
+		a_rd_en <= 0;
+		a_wr_en <= 0;
+		a_out <= 0;
+		b_addr <= 0;
+		b_rd_en <= 0;
+		b_wr_en <= 0;
+		b_out <= 0;
+		result <= 0;
+		done_flag <= 0;
 	end
 	else begin
 		case(state)
@@ -61,6 +77,7 @@ always @(posedge clk or negedge rst) begin
 					sub_state <= sub_state + 1;
 				case (sub_state)
 					3'd0: begin
+						branch_state <= 3'd2;
 						// assign
 						reg0 <= 0;
 					end
@@ -119,9 +136,9 @@ always @(posedge clk or negedge rst) begin
 						reg4 <= reg3 + 1;
 					end
 					3'd1: begin
-						a_rd_en <= 1;
+						a_rd_en <= 1'd0;
 						reg5 <= a_in;
-						b_rd_en <= 1;
+						b_rd_en <= 1'd0;
 						reg6 <= b_in;
 					end
 					3'd2: begin
@@ -149,9 +166,17 @@ always @(posedge clk or negedge rst) begin
 					sub_state <= sub_state + 1;
 				case (sub_state)
 					3'd0: begin
+						branch_state <= 3'd5;
+						result <= reg1;
+						state <= 3'd5;
 					end
 					default: ;
 				endcase
+			end
+			3'd5: begin
+				prev_state <= 3'd5;
+				state <= 3'd0;
+				done_flag <= 1;
 			end
 			default: ;
 		endcase
